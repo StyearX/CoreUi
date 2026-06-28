@@ -1,4 +1,4 @@
-local CoreUi = loadstring(game:HttpGet("https://raw.githubusercontent.com/StyearX/CoreUi/refs/heads/main//setting.luau"))()
+local CoreUi = loadstring(game:HttpGet("https://raw.githubusercontent.com/StyearX/Script/refs/heads/main/Luau/sss.lua"))()
 
 local MainTab = CoreUi:Tab("Main", {
     Title = "Main",
@@ -10,27 +10,17 @@ local CombatTab = CoreUi:Tab("Combat", {
     Icon  = "lucide/sword",
 })
 
-local VisualsTab = CoreUi:Tab("Visuals", {
-    Title = "Visuals",
-    Icon  = "lucide/eye",
-})
-
 local PlayerTab = CoreUi:Tab("Player", {
     Title = "Player",
     Icon  = "lucide/user",
 })
 
-MainTab:AddSection({
+local SecGeneral = MainTab:AddSection({
     Title = "General Settings",
     Icon = "lucide/settings",
 })
 
-MainTab:AddParagraph({
-    Title = "About",
-    Content = "Configure general game options below. Changes take effect immediately.",
-})
-
-MainTab:AddToggle({
+SecGeneral:AddToggle({
     Title = "Auto Farm",
     Description = "Toggle automatic farming on/off",
     Default = false,
@@ -39,7 +29,7 @@ MainTab:AddToggle({
     end,
 })
 
-MainTab:AddSlider({
+SecGeneral:AddSlider({
     Title = "Walk Speed",
     Description = "Adjust your walk speed",
     Min = 16,
@@ -55,9 +45,40 @@ MainTab:AddSlider({
     end,
 })
 
-MainTab:AddDropdown({
+SecGeneral:AddButton({
+    Title = "Developer Console",
+    Description = "Open the developer console",
+    Text = "Open Console",
+    Callback = function()
+        print("Console opened")
+    end,
+})
+
+SecGeneral:AddKeybind({
+    Title = "Toggle UI",
+    Description = "Key to show or hide the menu",
+    Default = Enum.KeyCode.RightShift,
+    Callback = function(key)
+        print("Keybind set to:", key.Name)
+    end,
+})
+
+SecGeneral:AddInput({
+    Title = "Player Name",
+    Description = "Enter a player name to target",
+    Placeholder = "Type name here...",
+    Callback = function(text, enterPressed)
+        print("Input:", text)
+    end,
+})
+
+local SecWeapons = MainTab:AddSection({
+    Title = "Weapon Settings",
+    Icon = "lucide/crosshair",
+})
+
+SecWeapons:AddDropdown({
     Title = "Weapon Select",
-    Description = "Choose your weapon (single)",
     Options = {
         { Label = "Sword", Value = "sword" },
         { Label = "Gun", Value = "gun", SubLabel = "Pistol" },
@@ -69,134 +90,57 @@ MainTab:AddDropdown({
     end,
 })
 
-MainTab:AddDropdown({
-    Title = "Multiple Features",
-    Description = "Select multiple features (multi)",
-    Options = {
-        { Label = "Speed Hack", Value = "speed" },
-        { Label = "Fly Mode", Value = "fly" },
-        { Label = "Noclip", Value = "noclip" },
-        { Label = "Infinite Jump", Value = "infjump" },
-    },
-    Multi = true,
-    Default = {"speed", "fly"},
-    Callback = function(values)
-        print("Selected features:", table.concat(values, ", "))
-    end,
+SecWeapons:AddParagraph({
+    Title = "About Weapons",
+    Content = "Choose your loadout carefully. Each weapon has different range and damage stats.",
 })
 
-MainTab:AddButton({
-    Title = "Developer Console",
-    Description = "Open the developer console",
-    Text = "Open Console",
-    Callback = function()
-        print("Console opened")
-    end,
-})
-
-MainTab:AddKeybind({
-    Title = "Toggle UI",
-    Description = "Key to show or hide the menu",
-    Default = Enum.KeyCode.RightShift,
-    Callback = function(key)
-        print("Keybind set to:", key.Name)
-    end,
-})
-
-MainTab:AddInput({
-    Title = "Player Name",
-    Description = "Enter a player name to target",
-    Placeholder = "Type name here...",
-    Default = "",
-    Callback = function(text, enterPressed)
-        print("Input:", text, "Enter:", enterPressed)
-    end,
-})
-
-CombatTab:AddSection({
+local SecCombat = CombatTab:AddSection({
     Title = "Combat Settings",
     Icon = "lucide/crosshair",
 })
 
-CombatTab:AddParagraph({
-    Content = "Adjust combat assistance settings. Use responsibly.",
-})
-
-CombatTab:AddToggle({
+SecCombat:AddToggle({
     Title = "Aimbot",
     Description = "Enable aimbot assistance",
     Default = true,
     Callback = function(v) print("Aimbot:", v) end,
 })
 
-CombatTab:AddSlider({
+SecCombat:AddSlider({
     Title = "Aim FOV",
     Description = "Field of view for aimbot",
     Min = 10,
     Max = 120,
-    Steps = 10,
+    Steps = 20,
     Default = 60,
     Callback = function(v) print("FOV:", v) end,
 })
 
-CombatTab:AddKeybind({
+SecCombat:AddKeybind({
     Title = "Aimbot Key",
-    Description = "Hold to activate aimbot",
     Default = Enum.KeyCode.Q,
     Callback = function(key)
         print("Aimbot key:", key.Name)
     end,
 })
 
-VisualsTab:AddSection({
-    Title = "Visual Enhancements",
-    Icon = "lucide/eye",
-})
-
-VisualsTab:AddParagraph({
-    Title = "ESP Info",
-    Content = "Show player positions and info through walls.",
-})
-
-VisualsTab:AddToggle({
-    Title = "ESP",
-    Description = "Show player ESP",
-    Default = false,
-    Callback = function(v) print("ESP:", v) end,
-})
-
-VisualsTab:AddDropdown({
-    Title = "ESP Mode",
-    Description = "Select ESP display style",
-    Options = {
-        { Label = "Box", Value = "box" },
-        { Label = "Chams", Value = "chams" },
-        { Label = "Glow", Value = "glow" },
-    },
-    Default = "box",
-    Callback = function(v) print("ESP Mode:", v) end,
-})
-
-PlayerTab:AddSection({
+local SecPlayer = PlayerTab:AddSection({
     Title = "Player Modifiers",
     Icon = "lucide/user",
 })
 
-PlayerTab:AddToggle({
+SecPlayer:AddToggle({
     Title = "God Mode",
-    Description = "Become invincible",
     Default = false,
-    Callback = function(v)
-        print("God Mode:", v)
-    end,
+    Callback = function(v) print("God Mode:", v) end,
 })
 
-PlayerTab:AddSlider({
+SecPlayer:AddSlider({
     Title = "Jump Power",
-    Description = "Modify jump height",
     Min = 50,
     Max = 200,
-    Steps = 10,
+    Steps = 150,
     Default = 50,
     Callback = function(v)
         print("Jump Power:", v)
@@ -207,25 +151,8 @@ PlayerTab:AddSlider({
     end,
 })
 
-PlayerTab:AddSlider({
-    Title = "Jump Power",
-    Description = "Modify jump height",
-    Min = 50,
-    Max = 200,
-    Steps = 5,
-    Default = 50,
-    Callback = function(v)
-        print("Jump Power:", v)
-        local player = game:GetService("Players").LocalPlayer
-        if player and player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
-            player.Character.Humanoid.JumpPower = v
-        end
-    end,
-})
-
-PlayerTab:AddInput({
+SecPlayer:AddInput({
     Title = "Custom Tag",
-    Description = "Set a custom display tag",
     Placeholder = "Your tag...",
     Callback = function(text)
         print("Tag set to:", text)
